@@ -26,28 +26,62 @@ export const postBatchCreate = async (req, res) => {
 export const findPostByUserid = async (req, res) => {
   try {
     const { userId } = req.params;
-    const foundPost = await Post.find({ userId: userId }).populate(
-      "user",
-      "username"
-    );
-    res.json({ success: true, foundPost });
+    const foundPosts = await Post.find({ userId: userId });
+    res.json({ success: true, foundPosts });
   } catch (err) {
     console.log(err);
     res.status(400).json({ success: false, error: err.message });
   }
 };
 
-// export const findPostByUsername = async (req, res) => {
-//   try {
-//     const { username2 } = req.params;
-//     const foundPosts = await Post.find({}).populate("user", "username");
-//     const foundPost2 = foundPosts.find(
-//       (post) => post.user.username === username2
-//     );
-//     console.log(foundPost2);
-//     res.json(foundPost2);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(400).json({ success: false, error: err.message });
-//   }
-// };
+export const updatePost = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, body } = req.body;
+    const { tags } = req.body;
+    console.log("line 42", tags);
+    let foundPost = await Post.findOne({ id: id });
+
+    if (!foundPost) {
+      return res.send("error/404: No post found");
+    }
+
+    if (foundPost.userId != req.body.userId) {
+      res.send("Not authorized to edit this post");
+    } else {
+      foundPost.title = title;
+      foundPost.body = body;
+      foundPost.tags = tags;
+
+      await foundPost.save();
+      res.json({ success: true, updatedPost: foundPost });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ success: false, error: err.message });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  try {
+    const { id, userId } = req.params;
+    console.log("Post ID:", id);
+    console.log("User ID:", userId);
+
+    const foundPost = await Post.findOne({ id: id });
+
+    if (!foundPost) {
+      return res.send("error/404: No post found");
+    }
+
+    if (foundPost.userId != userId) {
+      res.send("Not authorized to delete this post");
+    } else {
+      await foundPost.deleteOne();
+      res.json({ success: true, deletedPost: foundPost });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(404).json({ success: false, error: err.message });
+  }
+};
