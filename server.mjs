@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 5050;
 
 app.use(morgan("combined"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Routes
 
