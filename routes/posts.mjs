@@ -1,8 +1,9 @@
 import express from "express";
-import { create } from "../controllers/posts.mjs";
+import { postBatchCreate, postCreate } from "../controllers/posts.mjs";
 
 const router = express.Router();
 
-router.post("/new", create);
+router.post("/", postCreate);
+router.post("/batch-post", postBatchCreate);
 
 export default router;

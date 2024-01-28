@@ -4,6 +4,6 @@ import { userList, userCreate } from "../controllers/users.mjs";
 const router = express.Router();
 
 router.get("/", userList);
-router.post("/new", userCreate);
+router.post("/", userCreate);
 
 export default router;
