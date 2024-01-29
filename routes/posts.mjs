@@ -14,4 +14,5 @@ router.post("/batch-post", postBatchCreate);
 router.get("/:userId", findPostByUserid);
 router.put("/edit/:id", updatePost);
 router.delete("/:id/:userId", deletePost);
+
 export default router;

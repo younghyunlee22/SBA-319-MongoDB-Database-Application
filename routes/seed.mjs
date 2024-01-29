@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/user.mjs";
 import Post from "../models/post.mjs";
+import Comments from "../models/comment.mjs";
 
 const router = express.Router();
 
@@ -165,7 +166,6 @@ router.get("/", async (req, res) => {
     await Post.deleteMany({});
     await Post.insertMany([
       {
-        user: "65b4531f3a89d130cd93163b",
         id: 1,
         title: "They rushed out the door.",
         body: "They rushed out the door, grabbing anything and everything they could think of they might need. There was no time to double-check to make sure they weren't leaving something important behind. Everything was thrown into the car and they sped off. Thirty minutes later they were safe and that was when it dawned on them that they had forgotten the most important thing of all.",
@@ -174,7 +174,6 @@ router.get("/", async (req, res) => {
         reactions: 4,
       },
       {
-        user: "65b4531f3a89d130cd93163b",
         id: 2,
         title: "The paper was blank.",
         body: "The paper was blank. It shouldn't have been. There should have been writing on the paper, at least a paragraph if not more. The fact that the writing wasn't there was frustrating. Actually, it was even more than frustrating. It was downright distressing.",
@@ -183,7 +182,6 @@ router.get("/", async (req, res) => {
         reactions: 0,
       },
       {
-        user: "65b4531f3a89d130cd93163b",
         id: 3,
         title: "So what is the answer? How can you stand",
         body: "From the moment you go to prison you must put your cozy past firmly behind you. At the very threshold, you must say to yourself: “My life is over, a little early to be sure, but there’s nothing to be done about it. I shall never return to freedom.",
@@ -266,9 +264,85 @@ router.get("/", async (req, res) => {
         reactions: 6,
       },
     ]);
+
+    await Comments.deleteMany({});
+    await Comments.insertMany([
+      {
+        id: 1,
+        body: "This is some awesome thinking!",
+        postObjectId: "65b6c519e6587fc54c477d27",
+        postId: 1,
+      },
+      {
+        id: 2,
+        body: "What terrific math skills you’re showing!",
+        postObjectId: "65b6c519e6587fc54c477d27",
+        postId: 1,
+      },
+      {
+        id: 3,
+        body: "You are an amazing writer!",
+        postObjectId: "65b6c519e6587fc54c477d27",
+        postId: 1,
+      },
+      {
+        id: 4,
+        body: "Wow! You have improved so much!",
+        postObjectId: "65b6c519e6587fc54c477d27",
+        postId: 1,
+      },
+      {
+        id: 5,
+        body: "Nice idea!",
+        postObjectId: "65b6c519e6587fc54c477d27",
+        postId: 1,
+      },
+      {
+        id: 6,
+        body: "You are showing excellent understanding!",
+        postObjectId: "65b6c519e6587fc54c477d28",
+        postId: 2,
+      },
+      {
+        id: 7,
+        body: "This is clear, concise, and complete!",
+        postObjectId: "65b6c519e6587fc54c477d28",
+        postId: 2,
+      },
+      {
+        id: 8,
+        body: "What a powerful argument!",
+        postObjectId: "65b6c519e6587fc54c477d28",
+        postId: 2,
+      },
+      {
+        id: 9,
+        body: "I knew you could do it!",
+        postObjectId: "65b6c519e6587fc54c477d28",
+        postId: 2,
+      },
+      {
+        id: 10,
+        body: "Wonderful ideas!",
+        postObjectId: "65b6c51ae6587fc54c477d29",
+        postId: 3,
+      },
+      {
+        id: 11,
+        body: "It was a pleasure to grade this!",
+        postObjectId: "65b6c51ae6587fc54c477d29",
+        postId: 3,
+      },
+      {
+        id: 12,
+        body: "Keep up the incredible work!",
+        postObjectId: "65b6c51ae6587fc54c477d29",
+        postId: 3,
+      },
+    ]);
     res.json({ success: true });
   } catch (err) {
-    res.status(500).send("Something went wrong.");
+    res.status(500).json({ error: err.message });
   }
 });
 

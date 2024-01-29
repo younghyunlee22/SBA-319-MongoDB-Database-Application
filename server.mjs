@@ -16,12 +16,12 @@ app.use(express.urlencoded({ extended: true }));
 import seedRoute from "./routes/seed.mjs";
 import userRoutes from "./routes/users.mjs";
 import postRoutes from "./routes/posts.mjs";
-// import commentRoutes from "./routes/comments.mjs";
+import commentRoutes from "./routes/comments.mjs";
 
 app.use("/seed", seedRoute);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
-// app.use("comments", commentRoutes);
+app.use("/comments", commentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");

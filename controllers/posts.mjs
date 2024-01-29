@@ -1,13 +1,20 @@
 import Post from "../models/post.mjs";
-import User from "../models/user.mjs";
 
 export const postCreate = async (req, res) => {
   try {
+    const { title, body, userId } = req.body;
+    if (typeof title !== "string" || typeof body !== "string") {
+      return res.send("Please input texts.");
+    }
+    if (typeof userId !== "number") {
+      return res.send("usedId should be a number");
+    }
+
     const newPost = new Post({
       ...req.body,
     });
     await newPost.save();
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, newPost });
   } catch (err) {
     return res.status(400).json({ success: false, error: err.message });
   }
@@ -30,16 +37,15 @@ export const findPostByUserid = async (req, res) => {
     res.json({ success: true, foundPosts });
   } catch (err) {
     console.log(err);
-    res.status(400).json({ success: false, error: err.message });
+    res.status(404).json({ success: false, error: err.message });
   }
 };
 
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, body } = req.body;
-    const { tags } = req.body;
-    console.log("line 42", tags);
+    const { title, body, tags } = req.body;
+
     let foundPost = await Post.findOne({ id: id });
 
     if (!foundPost) {
