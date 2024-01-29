@@ -44,6 +44,7 @@ export const findPostByUserid = async (req, res) => {
 export const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
+    // this id is a number value of the 'id' field of a post document
     const { title, body, tags } = req.body;
 
     let foundPost = await Post.findOne({ id: id });
@@ -71,8 +72,6 @@ export const updatePost = async (req, res) => {
 export const deletePost = async (req, res) => {
   try {
     const { id, userId } = req.params;
-    console.log("Post ID:", id);
-    console.log("User ID:", userId);
 
     const foundPost = await Post.findOne({ id: id });
 
